@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/test
+  mongodb:
+    embedded:
+      version: 3.4.11
