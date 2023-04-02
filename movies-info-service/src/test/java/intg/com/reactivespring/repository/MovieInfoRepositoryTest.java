@@ -12,6 +12,7 @@ import reactor.test.StepVerifier;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -59,9 +60,8 @@ class MovieInfoRepositoryTest {
     void findById() {
         var movieInfoMono = movieInfoRepository.findById("abc").log();
         StepVerifier.create(movieInfoMono)
-                .assertNext(movieInfo -> {
-                    assertEquals("Dark Knight Rises", movieInfo.getName());
-                });
+                .assertNext(movieInfo -> assertEquals("Dark Knight Rises", movieInfo.getName()))
+                .verifyComplete();
     }
 
     @Test
@@ -75,20 +75,22 @@ class MovieInfoRepositoryTest {
                 .assertNext(info -> {
                     assertNotNull(info.getMovieInfoId());
                     assertEquals("Batman Begins", info.getName());
-                });
+                })
+                .verifyComplete();
     }
 
     @Test
     void updateMovieInfo() {
         var movieInfo = movieInfoRepository.findById("abc").block();
-        movieInfo.setYear(2023);
+        Objects.requireNonNull(movieInfo).setYear(2023);
         var movieInfoMono = movieInfoRepository.save(movieInfo).log();
 
         StepVerifier.create(movieInfoMono)
                 .assertNext(info -> {
                     assertNotNull(info.getMovieInfoId());
                     assertEquals(2023, info.getYear());
-                });
+                })
+                .verifyComplete();
     }
 
     @Test
@@ -105,17 +107,15 @@ class MovieInfoRepositoryTest {
     void findByYear() {
         var movieInfoMono = movieInfoRepository.findByYear(2012).log();
         StepVerifier.create(movieInfoMono)
-                .assertNext(movieInfo -> {
-                    assertEquals("Dark Knight Rises", movieInfo.getName());
-                });
+                .assertNext(movieInfo -> assertEquals("Dark Knight Rises", movieInfo.getName()))
+                .verifyComplete();
     }
 
     @Test
     void findByName() {
         var movieInfoMono = movieInfoRepository.findByName("Batman Begins").log();
         StepVerifier.create(movieInfoMono)
-                .assertNext(movieInfo -> {
-                    assertEquals("Batman Begins", movieInfo.getName());
-                });
+                .assertNext(movieInfo -> assertEquals("Batman Begins", movieInfo.getName()))
+                .verifyComplete();
     }
 }

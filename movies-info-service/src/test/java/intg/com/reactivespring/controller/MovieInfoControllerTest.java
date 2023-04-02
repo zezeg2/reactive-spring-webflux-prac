@@ -110,7 +110,7 @@ class MovieInfoControllerTest {
     void getMovieInfosByYear() {
         webTestClient
                 .get()
-                .uri(UriComponentsBuilder.fromUriString(BASE_URL).queryParam("2012").buildAndExpand().toUri())
+                .uri(UriComponentsBuilder.fromUriString(BASE_URL).queryParam("year", "2012").buildAndExpand().toUri())
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
